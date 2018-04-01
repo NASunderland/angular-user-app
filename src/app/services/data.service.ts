@@ -1,0 +1,64 @@
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
+
+import { User } from '../models/User';
+
+@Injectable()
+export class DataService {
+  users: User[];
+  data: Observable<any>;
+
+  constructor() {
+    this.users = [
+      {
+        firstName: 'Nick',
+        lastName: 'Doe',
+        email: 'nick@yahoo.com',
+        isActive: true,
+        registered: new Date('01/02/2018 08:30:00'),
+        hide: true
+    },
+    {
+      firstName: 'Kevin',
+      lastName: 'Peters',
+      email: 'kevin@gmail.com',
+      isActive: false,
+      registered: new Date('03/11/2017 06:20:00'),
+      hide: true
+    },
+    {
+      firstName: 'Jane',
+      lastName: 'Williams',
+      email: 'test@test.com',
+      isActive: true,
+      registered: new Date('02/22/2016 10:30:00'),
+      hide: true
+    }];
+   }
+
+   getData() {
+     return this.data = new Observable(observer => {
+        setTimeout(() => {
+          observer.next(1);
+        }, 1000);
+        setTimeout(() => {
+          observer.next(2);
+        }, 2000);
+        setTimeout(() => {
+          observer.next(3);
+        }, 3000);
+        setTimeout(() => {
+          observer.next(4);
+        }, 4000);
+     });
+   }
+
+   getUsers(): Observable<User[]> {
+     return of(this.users);
+   }
+
+   addUser(user: User) {
+     this.users.unshift(user);
+   }
+}

@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { User } from '../../models/User';
 import { FormsModule } from '@angular/forms';
 
+import { DataService } from '../../services/data.service';
+
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
@@ -20,38 +22,19 @@ export class UsersComponent implements OnInit {
   enableAdd = false;
   showUserForm = false;
   @ViewChild('userForm')form: any;
+  data: any;
 
-  constructor() { }
+  constructor(private dataService: DataService) { }
 
   ngOnInit() {
-      this.users = [
-        {
-          firstName: 'Nick',
-          lastName: 'Doe',
-          email: 'nick@yahoo.com',
-          isActive: true,
-          registered: new Date('01/02/2018 08:30:00'),
-          hide: true
-      },
-      {
-        firstName: 'Kevin',
-        lastName: 'Peters',
-        email: 'kevin@gmail.com',
-        isActive: false,
-        registered: new Date('03/11/2017 06:20:00'),
-        hide: true
-      },
-      {
-        firstName: 'Jane',
-        lastName: 'Williams',
-        email: 'test@test.com',
-        isActive: true,
-        registered: new Date('02/22/2016 10:30:00'),
-        hide: true
-      }];
-  
-      this.loaded = true;
+    this.dataService.getData().subscribe(data => {
+      console.log(data);
+    });
 
+    this.dataService.getUsers().subscribe(users => {
+      this.users = users;
+      this.loaded = true;
+    });
   }
 
   // addUser() {
@@ -79,7 +62,7 @@ export class UsersComponent implements OnInit {
       value.registered = new Date();
       value.hide = true;
 
-      this.users.unshift(value);
+      this.dataService.addUser(value);
 
       this.form.reset();
     }
